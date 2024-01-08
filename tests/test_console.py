@@ -134,6 +134,4 @@ class TestConsole(unittest.TestCase):
             self.consol.onecmd("update State 1234-1234-1234 name=\"Texas\"")
             self.assertEqual("** no instance found **\n", f.getvalue())
 
-if __name__ == "__main__":
-    unittest.main()
 
