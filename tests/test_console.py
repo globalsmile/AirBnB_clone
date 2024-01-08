@@ -10,6 +10,7 @@ import tests
 from console import HBNBCommand
 
 
+
 class TestConsole(unittest.TestCase):
     """tests for the console, quit and empty"""
 
@@ -60,3 +61,79 @@ class TestConsole(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             self.consol.onecmd("quit")
             self.assertEqual('', f.getvalue())
+
+    def test_EOF(self):
+        """test the EOF command works"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd("EOF")
+            self.assertEqual('', f.getvalue())
+
+    def test_create(self):
+        """test create command"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd("create State name=\"California\"")
+            self.assertTrue(len(f.getvalue()) > 0)
+    
+    def test_show(self):
+        """test show command"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd("show State")
+            self.assertEqual("** class name missing **\n", f.getvalue())
+            self.consol.onecmd("show State 1234-1234-1234")
+            self.assertEqual("** class doesn't exist **\n", f.getvalue())
+            self.consol.onecmd("create State name=\"California\"")
+            self.consol.onecmd("show State 1234-1234-1234")
+            self.assertEqual("** no instance found **\n", f.getvalue())
+
+    def test_destroy(self):
+        """test destroy command"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd("destroy State")
+            self.assertEqual("** class name missing **\n", f.getvalue())
+            self.consol.onecmd("destroy State 1234-1234-1234")
+            self.assertEqual("** class doesn't exist **\n", f.getvalue())
+            self.consol.onecmd("create State name=\"California\"")
+            self.consol.onecmd("destroy State 1234-1234-1234")
+            self.assertEqual("** no instance found **\n", f.getvalue())
+
+    def test_all(self):
+        """test all command"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd("all State")
+            self.assertEqual("** class doesn't exist **\n", f.getvalue())
+            self.consol.onecmd("create State name=\"California\"")
+            self.consol.onecmd("all State")
+            self.assertTrue(len(f.getvalue()) > 0)
+
+    def test_update(self):
+        """test update command"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.consol.onecmd("update State")
+            self.assertEqual("** class name missing **\n", f.getvalue())
+            self.consol.onecmd("update State 1234-1234-1234")
+            self.assertEqual("** class doesn't exist **\n", f.getvalue())
+            self.consol.onecmd("create State name=\"California\"")
+            self.consol.onecmd("update State 1234-1234-1234")
+            self.assertEqual("** no instance found **\n", f.getvalue())
+            self.consol.onecmd("update State 1234-1234-1234 name=\"Texas\"")
+            self.assertEqual("** no instance found **\n", f.getvalue())
+            self.consol.onecmd("update State 1234-1234-1234 name=\"Texas\"")
+            self.assertEqual("** no instance found **\n", f.getvalue())
+            self.consol.onecmd("update State 1234-1234-1234 name=\"Texas\"")
+            self.assertEqual("** no instance found **\n", f.getvalue())
+            self.consol.onecmd("update State 1234-1234-1234 name=\"Texas\"")
+            self.assertEqual("** no instance found **\n", f.getvalue())
+            self.consol.onecmd("update State 1234-1234-1234 name=\"Texas\"")
+            self.assertEqual("** no instance found **\n", f.getvalue())
+            self.consol.onecmd("update State 1234-1234-1234 name=\"Texas\"")
+            self.assertEqual("** no instance found **\n", f.getvalue())
+            self.consol.onecmd("update State 1234-1234-1234 name=\"Texas\"")
+            self.assertEqual("** no instance found **\n", f.getvalue())
+            self.consol.onecmd("update State 1234-1234-1234 name=\"Texas\"")
+            self.assertEqual("** no instance found **\n", f.getvalue())
+            self.consol.onecmd("update State 1234-1234-1234 name=\"Texas\"")
+            self.assertEqual("** no instance found **\n", f.getvalue())
+
+if __name__ == "__main__":
+    unittest.main()
+
